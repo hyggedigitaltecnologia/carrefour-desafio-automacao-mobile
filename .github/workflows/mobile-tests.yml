@@ -63,7 +63,7 @@ jobs:
       - name: Baixar APK
         run: |
           curl -L -o apps/android.wdio.native.app.v2.2.0.apk \
-            https://github.com/nicedoc/wdio-native-demo-app/releases/download/v2.2.0/android.wdio.native.app.v2.2.0.apk
+            https://github.com/webdriverio/native-demo-app/releases/download/v2.2.0/android.wdio.native.app.v2.2.0.apk
 
       - name: Habilitar KVM
         run: |
@@ -171,7 +171,7 @@ jobs:
       - name: Baixar APK
         run: |
           curl -L -o apps/android.wdio.native.app.v2.2.0.apk \
-            https://github.com/nicedoc/wdio-native-demo-app/releases/download/v2.2.0/android.wdio.native.app.v2.2.0.apk
+            https://github.com/webdriverio/native-demo-app/releases/download/v2.2.0/android.wdio.native.app.v2.2.0.apk
 
       - name: Habilitar KVM
         run: |

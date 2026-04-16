@@ -5,7 +5,7 @@ stages:
   - report
 
 variables:
-  APK_URL: "https://github.com/nicedoc/wdio-native-demo-app/releases/download/v2.2.0/android.wdio.native.app.v2.2.0.apk"
+  APK_URL: "https://github.com/webdriverio/native-demo-app/releases/download/v2.2.0/android.wdio.native.app.v2.2.0.apk"
   ANDROID_API_LEVEL: "34"
 
 cache:
