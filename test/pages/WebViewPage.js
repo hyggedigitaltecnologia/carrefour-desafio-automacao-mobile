@@ -26,8 +26,8 @@ class WebViewPage extends BasePage {
         } catch (err) {
             if (err.message && err.message.includes('Chromedriver')) {
                 throw new Error(
-                    `Chromedriver incompatível com a versão do Chrome no emulador. ` +
-                    `Instale o chromedriver correto ou atualize o Chrome. Erro: ${err.message}`
+                    'Chromedriver incompatível com a versão do Chrome no emulador. ' +
+                    'Instale o chromedriver correto ou atualize o Chrome. Erro: ' + err.message
                 );
             }
             throw err;

@@ -1,6 +1,5 @@
 const BasePage = require('./BasePage');
 const Gestures = require('../helpers/Gestures');
-const WaitHelper = require('../helpers/WaitHelper');
 
 class FormsPage extends BasePage {
     constructor() {
