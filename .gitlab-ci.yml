@@ -1,0 +1,120 @@
+stages:
+  - install
+  - lint
+  - test
+  - report
+
+variables:
+  APK_URL: "https://github.com/nicedoc/wdio-native-demo-app/releases/download/v2.2.0/android.wdio.native.app.v2.2.0.apk"
+  ANDROID_API_LEVEL: "34"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+# ────────────────────────────────────
+# Stage: Install
+# ────────────────────────────────────
+install_dependencies:
+  stage: install
+  image: node:20
+  script:
+    - npm ci
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# ────────────────────────────────────
+# Stage: Lint
+# ────────────────────────────────────
+lint_code:
+  stage: lint
+  image: node:20
+  needs: ["install_dependencies"]
+  script:
+    - npm run lint
+  allow_failure: false
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# ────────────────────────────────────
+# Stage: Test - Smoke
+# ────────────────────────────────────
+smoke_tests_android:
+  stage: test
+  image: thyrlian/android-sdk:latest
+  needs: ["lint_code"]
+  timeout: 15 minutes
+  before_script:
+    - apt-get update && apt-get install -y curl nodejs npm
+    - npm ci
+    - mkdir -p apps
+    - curl -L -o apps/android.wdio.native.app.v2.2.0.apk $APK_URL
+    - sdkmanager "system-images;android-${ANDROID_API_LEVEL};google_apis;x86_64"
+    - echo "no" | avdmanager create avd -n test_device -k "system-images;android-${ANDROID_API_LEVEL};google_apis;x86_64" --force
+    - emulator -avd test_device -no-window -no-audio -no-snapshot -gpu swiftshader_indirect &
+    - npx appium &
+    - adb wait-for-device
+    - adb shell getprop sys.boot_completed | grep -q 1 || sleep 30
+  script:
+    - npm run android:smoke
+  artifacts:
+    when: always
+    paths:
+      - allure-results/
+      - screenshots/
+    expire_in: 7 days
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# ────────────────────────────────────
+# Stage: Test - Regression
+# ────────────────────────────────────
+regression_tests_android:
+  stage: test
+  image: thyrlian/android-sdk:latest
+  needs: ["smoke_tests_android"]
+  timeout: 25 minutes
+  before_script:
+    - apt-get update && apt-get install -y curl nodejs npm
+    - npm ci
+    - mkdir -p apps
+    - curl -L -o apps/android.wdio.native.app.v2.2.0.apk $APK_URL
+    - sdkmanager "system-images;android-${ANDROID_API_LEVEL};google_apis;x86_64"
+    - echo "no" | avdmanager create avd -n test_device -k "system-images;android-${ANDROID_API_LEVEL};google_apis;x86_64" --force
+    - emulator -avd test_device -no-window -no-audio -no-snapshot -gpu swiftshader_indirect &
+    - npx appium &
+    - adb wait-for-device
+    - adb shell getprop sys.boot_completed | grep -q 1 || sleep 30
+  script:
+    - npm run android
+  artifacts:
+    when: always
+    paths:
+      - allure-results/
+      - screenshots/
+    expire_in: 30 days
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# ────────────────────────────────────
+# Stage: Report
+# ────────────────────────────────────
+generate_allure_report:
+  stage: report
+  image: node:20
+  needs: ["regression_tests_android"]
+  script:
+    - npm ci
+    - npx allure generate allure-results --clean -o public
+  artifacts:
+    paths:
+      - public/
+    expire_in: 30 days
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_COMMIT_BRANCH == "main"

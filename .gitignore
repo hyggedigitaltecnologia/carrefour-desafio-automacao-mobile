@@ -1,0 +1,12 @@
+node_modules/
+allure-results/
+allure-report/
+screenshots/*.png
+screenshots/@*
+apps/*.apk
+apps/*.app
+apps/*.ipa
+*.log
+.DS_Store
+dist/
+.claude/

@@ -1,0 +1,24 @@
+{
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es2021": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "globals": {
+    "$": "readonly",
+    "$$": "readonly",
+    "driver": "readonly",
+    "browser": "readonly"
+  },
+  "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-console": "off"
+  }
+}

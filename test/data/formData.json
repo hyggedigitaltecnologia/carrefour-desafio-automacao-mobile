@@ -1,0 +1,45 @@
+{
+  "textInputs": [
+    { "value": "Teste básico de texto", "descricao": "texto simples em português" },
+    { "value": "Ação com acentuação: ção, ão, é, ê", "descricao": "caracteres acentuados" },
+    { "value": "!@#$%^&*()_+-=[]{}|;':\",./<>?", "descricao": "caracteres especiais" },
+    { "value": "123456789", "descricao": "apenas números" }
+  ],
+  "dropdownOptions": [
+    "webdriver.io is awesome",
+    "Appium is awesome",
+    "This app is awesome"
+  ],
+  "signup": {
+    "validos": [
+      {
+        "email": "novo.usuario@test.com",
+        "password": "Senha@Forte1",
+        "descricao": "cadastro com dados válidos"
+      }
+    ],
+    "invalidos": [
+      {
+        "email": "novo@test.com",
+        "password": "Forte@123",
+        "confirmPassword": "Diferente@456",
+        "erroEsperado": "confirm",
+        "descricao": "senhas diferentes"
+      },
+      {
+        "email": "invalido",
+        "password": "Forte@123",
+        "confirmPassword": "Forte@123",
+        "erroEsperado": "email",
+        "descricao": "email inválido no cadastro"
+      },
+      {
+        "email": "novo@test.com",
+        "password": "abc",
+        "confirmPassword": "abc",
+        "erroEsperado": "password",
+        "descricao": "senha curta no cadastro"
+      }
+    ]
+  }
+}
