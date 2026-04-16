@@ -1,6 +1,7 @@
 node_modules/
 allure-results/
 allure-report/
+reports/
 screenshots/*.png
 screenshots/@*
 apps/*.apk

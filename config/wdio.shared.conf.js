@@ -31,6 +31,13 @@ module.exports.config = {
                 Runner: 'Appium UiAutomator2',
             },
         }],
+        ['junit', {
+            outputDir: './reports',
+            outputFileFormat({ cid, capabilities }) {
+                const device = capabilities['appium:deviceName'] || 'android';
+                return `results-${device}-${cid}.xml`;
+            },
+        }],
     ],
 
     async afterTest(test, _context, { error, passed }) {
